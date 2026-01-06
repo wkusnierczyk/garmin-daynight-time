@@ -1,8 +1,6 @@
 <resources>
 
     <fonts>
-        <font id="HourFont" filename="{blank:hourfont}.fnt" antialias="true" />
-        <font id="MinutesFont" filename="{blank:minutesfont}.fnt" antialias="true" />
         <font id="StandardTimeFont" filename="Ubuntu-Regular-30.fnt" antialias="true" />
     </fonts>
 

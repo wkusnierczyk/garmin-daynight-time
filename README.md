@@ -1,34 +1,34 @@
-# Garmin {blank:ucname} Time
+# Garmin Daynight Time
 
-A minimalist, elegant, nerdy, typography-focused Garmin Connect IQ watch face that displays the current time {blank:short-description}.
+A minimalist, elegant, nerdy Garmin Connect IQ watch face that displays the current time as a day-night gauge.
 
-![{blank:ucname} Time](resources/graphics/{blank:ucname}TimeHero-small.png)
+![Daynight Time](resources/graphics/DaynightTimeHero-small.png)
 
 Available from [Garmin Connect IQ Developer portal](https://apps.garmin.com/apps/{blank:app-id}) or through the Connect IQ mobile app.
 
 > **Note**  
-> {blank:ucname} Time is part of a [collection of unconventional Garmin watch faces](https://github.com/wkusnierczyk/garmin-watch-faces). It has been developed for fun, as a proof of concept, and as a learning experience.
+> Daynight Time is part of a [collection of unconventional Garmin watch faces](https://github.com/wkusnierczyk/garmin-watch-faces). It has been developed for fun, as a proof of concept, and as a learning experience.
 > It is shared _as is_ as an open source project, with no commitment to long term maintenance and further feature development.
 >
-> Please use [issues](https://github.com/wkusnierczyk/garmin-{blank:lcname}-time/issues) to provide bug reports or feature requests.  
-> Please use [discussions](https://github.com/wkusnierczyk/garmin-{blank:lcname}-time/discussions) for any other comments.
+> Please use [issues](https://github.com/wkusnierczyk/garmin-daynight-time/issues) to provide bug reports or feature requests.  
+> Please use [discussions](https://github.com/wkusnierczyk/garmin-daynight-time/discussions) for any other comments.
 >
 > All feedback is wholeheartedly welcome.
 
 ## Contents
 
-* [{blank:ucname} time](#{blank:lcname}-time)
+* [Daynight time](#daynight-time)
 * [Features](#features)
 * [Fonts](#fonts)
 * [Build, test, deploy](#build-test-deploy)
 
-## {blank:ucname} time
+## Daynight time
 
-{blank:description}
+
 
 ## Features
 
-The {blank:ucname} Time watch face supports the following features:
+The Daynight Time watch face supports the following features:
 
 |Screenshot|Description|
 |-|:-|
@@ -36,7 +36,7 @@ The {blank:ucname} Time watch face supports the following features:
 
 ## Fonts
 
-The {blank:ucname} Time watch face uses custom fonts:
+The Daynight Time watch face uses custom fonts:
 
 {blank:fonts}
 

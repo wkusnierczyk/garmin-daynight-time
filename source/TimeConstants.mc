@@ -19,12 +19,6 @@ const MAX_MINUTES = 59;
 const STANDARD_TIME_LAYOUT_ID = "StandardTimeLayout";
 
 
-// Fonts
-const HOUR_FONT = Application.loadResource(Rez.Fonts.HourFont);
-const MINUTES_FONT = Application.loadResource(Rez.Fonts.MinutesFont);
-const SECONDS_FONT = Application.loadResource(Rez.Fonts.SecondsFont);
-
-
 // Settings
 const CUSTOMIZE_MENU_TITLE = Application.loadResource(Rez.Strings.Time);
 

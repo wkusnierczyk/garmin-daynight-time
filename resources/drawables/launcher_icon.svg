@@ -1,0 +1,64 @@
+<!--
+  Launcher Icon for the Daynight Time Watch Face App
+  This icon represents a day/night time display with a split circular design:
+  - Top half (orange): Represents daytime
+  - Bottom half (blue): Represents nighttime
+  - Small dot indicator: Shows current time position
+-->
+<svg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>
+      /* CSS variables for consistent color and styling */
+      :root {
+        --color-background: #000000;  /* Black background */
+        --color-orange: #FF9500;      /* Orange for daytime/top half */
+        --color-blue: #007AFF;        /* Blue for nighttime/bottom half */
+        --ring-thickness: 10px;         /* Thickness of the circular ring arcs */
+      }
+
+      /* Background layer fills the entire icon area */
+      .background-layer {
+        fill: var(--color-background);
+      }
+
+      /* Base styling for the ring arcs (semicircles) */
+      .ring-arc {
+        fill: none;                    /* No fill, only stroke */
+        stroke-width: var(--ring-thickness);
+        stroke-linecap: butt;          /* Clean cut for the halves - no rounded ends */
+      }
+
+      /* Top semicircle in orange (daytime representation) */
+      .ring-top {
+        stroke: var(--color-orange);
+      }
+
+      /* Bottom semicircle in blue (nighttime representation) */
+      .ring-bottom {
+        stroke: var(--color-blue);
+      }
+
+      /* Small indicator dot showing time position */
+      .indicator-dot {
+        fill: var(--color-orange);
+      }
+    </style>
+  </defs>
+
+  <!-- Black background rectangle covering the entire icon -->
+  <rect class="background-layer" width="100" height="100" />
+
+  <!-- Top semicircle arc: draws from left (10,50) to right (90,50) along the top half -->
+  <!-- Arc parameters: radius 40x40, no rotation, large arc flag=0, sweep flag=1 (clockwise) -->
+  <!-- <path d="M 10 50 A 40 40 0 0 1 90 50" class="ring-arc ring-top" /> -->
+  <path d="M 20 50 A 30 30 0 0 1 80 50" class="ring-arc ring-top" />
+
+  <!-- Bottom semicircle arc: draws from right (90,50) to left (10,50) along the bottom half -->
+  <!-- Arc parameters: radius 40x40, no rotation, large arc flag=0, sweep flag=1 (clockwise) -->
+  <!-- <path d="M 90 50 A 40 40 0 0 1 10 50" class="ring-arc ring-bottom" /> -->
+  <path d="M 80 50 A 30 30 0 0 1 20 50" class="ring-arc ring-bottom" />
+
+  <!-- Small orange dot positioned on the top arc to indicate current time -->
+  <circle cx="60" cy="40" r="6" class="indicator-dot" />
+
+</svg>
