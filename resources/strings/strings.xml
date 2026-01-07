@@ -2,19 +2,15 @@
     xsi:noNamespaceSchemaLocation="http://developer.garmin.com/downloads/connect-iq/resources.xsd">
 
     <string id="AppName">DaynightTime</string>
-    <!-- <string id="MenuTitle">Daynight Time</string> -->
+    
+    <string id="SettingsMenuTitle">Daynight Time</string>
+    <string id="SunColorTitle">Sun Face Color</string>
+    <string id="SunColorOutline">Daynight outline</string>
+    <string id="SunColorGreeting">Daynight greeting</string>
 
-    <!-- <string id="StandardTimeMenuTitle">Show Standard Time</string>
-
-    <string id="MultiOptionMenuTitle">MultiOption</string>
-    <string id="Option1">Option 1</string>
-    <string id="Option2">Option 2</string>
-    <string id="Option3">Option 3</string>
-
-    <jsonData id="MultiOptionValues">[
-        "Option 1",
-        "Option 2",
-        "Option 3"
-    ]</jsonData> -->
+    <jsonData id="SunColorNames">[
+        "Daynight outline",
+        "Daynight greeting"
+    ]</jsonData>
 
 </resources>

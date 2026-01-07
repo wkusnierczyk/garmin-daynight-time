@@ -1,15 +1,10 @@
 <settings xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://developer.garmin.com/downloads/connect-iq/resources.xsd">
 
-    <!-- <setting propertyKey="@Properties.ShowStandardTime" title="@Strings.StandardTimeMenuTitle">
-        <settingConfig type="boolean" />
-    </setting>
-
-    <setting propertyKey="@Properties.MultiOptionProperty" title="@Strings.MultiOptionMenuTitle">
+    <setting propertyKey="@Properties.SunColor" title="@Strings.SunColorTitle">
         <settingConfig type="list">
-            <listEntry value="1">@Strings.Option1</listEntry>
-            <listEntry value="2">@Strings.Option2</listEntry>
-            <listEntry value="3">@Strings.Option3</listEntry>
+            <listEntry value="0">@Strings.SunColorOutline</listEntry>
+            <listEntry value="1">@Strings.SunColorGreeting</listEntry>
         </settingConfig>
-    </setting> -->
-
+    </setting>
+    
 </settings>
