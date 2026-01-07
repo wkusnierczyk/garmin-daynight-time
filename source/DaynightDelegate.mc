@@ -3,6 +3,8 @@ using Toybox.WatchUi;
 
 import Toybox.Lang;
 
+using Constants as CS;
+
 
 class DaynightDelegate extends WatchUi.Menu2InputDelegate {
 
@@ -12,18 +14,14 @@ class DaynightDelegate extends WatchUi.Menu2InputDelegate {
 
     function onSelect(item) {
 
-        // var id = item.getId();
+        var id = item.getId();
         
-        // if (id.equals(STANDARD_TIME_PROPERTY) && item instanceof WatchUi.ToggleMenuItem) {
-        //     Properties.setValue(STANDARD_TIME_PROPERTY, item.isEnabled());
-        // }
-
-        // if (id.equals(MULTI_OPTION_PROPERTY) && item instanceof WatchUi.MenuItem) {
-        //     var currentOption = PropertyUtils.getPropertyElseDefault(MULTI_OPTION_PROPERTY, MULTI_OPTION_DEFAULT);
-        //     var newOption = (currentOption % MULTI_OPTION_NAMES.size()) + 1;
-        //     Properties.setValue(MULTI_OPTION_PROPERTY, newOption);
-        //     item.setSubLabel(MULTI_OPTION_NAMES[newOption -1]);
-        // }
+        if (id.equals(CS.SUN_COLOR_PROPERTY_ID) && item instanceof WatchUi.MenuItem) {
+            var currentIndex = PropertyUtils.getPropertyElseDefault(CS.SUN_COLOR_PROPERTY_ID, CS.SUN_COLOR_PROPERTY_DEFAULT);
+            var newIndex = (currentIndex + 1) % CS.SUN_COLOR_NAMES.size();
+            Properties.setValue(CS.SUN_COLOR_PROPERTY_ID, newIndex);
+            item.setSubLabel(CS.SUN_COLOR_NAMES[newIndex]);
+        }
 
     }
 

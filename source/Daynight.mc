@@ -7,8 +7,9 @@ using Toybox.Time;
 using Toybox.Time.Gregorian;
 using Toybox.Weather;
 
-
 import Toybox.Lang;
+
+using Constants as CS;
 
 
 class Daynight {
@@ -62,16 +63,15 @@ class Daynight {
             :longitude => DEFAULT_LONGITUDE,
             :format => :degrees
         });
-        _refershLocation();
+        _refershLocation(); // disable for simulation
         _refreshSunData();
     }
 
     private function _refershLocation() as Daynight {
-        // TODO: enable for deployment
-        // var position_info = Position.getInfo();
-        // if (position_info has :position && position_info.position != null) {
-        //     _location = position_info.position;
-        // }
+        var position_info = Position.getInfo();
+        if (position_info has :position && position_info.position != null) {
+            _location = position_info.position;
+        }
         return self;
     }
 
@@ -152,32 +152,37 @@ class Daynight {
         var eveningMinutes = 22 * 60;
         // var midnightMinutes = 23 * 60 + 59;
 
-        var daynight = "day";
-        var daynightColor = DEFAULT_TEXT_COLOR;
+        var greeting = "day";
+        var greetingColor = DEFAULT_TEXT_COLOR;
         var sunColor = DEFAULT_TWILIGHT_COLOR;
 
         if (currentMinutes < sunriseMinutes or currentMinutes >= eveningMinutes) {
-            daynight = DEFAULT_NIGHT_TEXT;
-            daynightColor = DEFAULT_NIGHT_COLOR;
+            greeting = DEFAULT_NIGHT_TEXT;
+            greetingColor = DEFAULT_NIGHT_COLOR;
             sunColor = DEFAULT_NIGHT_COLOR;
         } else if (currentMinutes >= sunriseMinutes and currentMinutes <= noonMinutes) {
-            daynight = DEFAULT_MORNING_TEXT;
-            daynightColor = DEFAULT_MORNING_COLOR;
+            greeting = DEFAULT_MORNING_TEXT;
+            greetingColor = DEFAULT_MORNING_COLOR;
             sunColor = DEFAULT_DAY_COLOR;
         } else if (currentMinutes > noonMinutes and currentMinutes <= sunsetMinutes) {
-            daynight = DEFAULT_AFTERNOON_TEXT;
-            daynightColor = DEFAULT_AFTERNOON_COLOR;
+            greeting = DEFAULT_AFTERNOON_TEXT;
+            greetingColor = DEFAULT_AFTERNOON_COLOR;
             sunColor = DEFAULT_DAY_COLOR;
         } else if (currentMinutes > sunsetMinutes and currentMinutes < eveningMinutes) {
-            daynight = DEFAULT_EVENING_TEXT;
-            daynightColor = DEFAULT_EVENING_COLOR;
+            greeting = DEFAULT_EVENING_TEXT;
+            greetingColor = DEFAULT_EVENING_COLOR;
             sunColor = DEFAULT_NIGHT_COLOR;
         }
 
+        var sunColorIndex = PropertyUtils.getPropertyElseDefault(CS.SUN_COLOR_PROPERTY_ID, CS.SUN_COLOR_PROPERTY_DEFAULT);
+        if (sunColorIndex == 1) { // sun color = greeting color
+            sunColor = greetingColor;
+        }
+        
         dc.setColor(sunColor, Graphics.COLOR_TRANSPARENT);
         dc.fillCircle(centerX + sunCoordinates[0], centerY + sunCoordinates[1], DEFAULT_THICKNESS_FACTOR * radius);
         
-        var daynightDimensions = dc.getTextDimensions(daynight, DEFAULT_DAYNIGHT_FONT);
+        var daynightDimensions = dc.getTextDimensions(greeting, DEFAULT_DAYNIGHT_FONT);
         var daynightWidth = daynightDimensions[0];
         var daynightHeight = daynightDimensions[1];
         var verticalShift = DEFAULT_VERTICAL_TEXT_SHIFT_FACTOR * daynightHeight;
@@ -188,8 +193,8 @@ class Daynight {
         dc.drawText(centerX, centerY + verticalShift, DEFAULT_TEXT_FONT, DEFAULT_ADDRESS_TEXT, Graphics.TEXT_JUSTIFY_CENTER | Graphics.TEXT_JUSTIFY_VCENTER);
         dc.drawText(daynightX + daynightWidth, centerY, DEFAULT_DAYNIGHT_FONT, ",", Graphics.TEXT_JUSTIFY_LEFT | Graphics.TEXT_JUSTIFY_VCENTER);
 
-        dc.setColor(daynightColor, Graphics.COLOR_TRANSPARENT);
-        dc.drawText(daynightX, centerY, DEFAULT_DAYNIGHT_FONT, daynight, Graphics.TEXT_JUSTIFY_LEFT | Graphics.TEXT_JUSTIFY_VCENTER);
+        dc.setColor(greetingColor, Graphics.COLOR_TRANSPARENT);
+        dc.drawText(daynightX, centerY, DEFAULT_DAYNIGHT_FONT, greeting, Graphics.TEXT_JUSTIFY_LEFT | Graphics.TEXT_JUSTIFY_VCENTER);
 
         return self;
     }
