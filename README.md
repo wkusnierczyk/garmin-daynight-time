@@ -4,7 +4,7 @@ A minimalist, elegant, nerdy Garmin Connect IQ watch face that displays the curr
 
 ![Daynight Time](resources/graphics/DaynightTimeHero-small.png)
 
-Available from [Garmin Connect IQ Developer portal](https://apps.garmin.com/apps/{blank:app-id}) or through the Connect IQ mobile app.
+Available from [Garmin Connect IQ Developer portal](https://apps.garmin.com/apps/b46eb668-f495-4db4-8f98-f28a4bd9cca5) or through the Connect IQ mobile app.
 
 > **Note**  
 > Daynight Time is part of a [collection of unconventional Garmin watch faces](https://github.com/wkusnierczyk/garmin-watch-faces). It has been developed for fun, as a proof of concept, and as a learning experience.
