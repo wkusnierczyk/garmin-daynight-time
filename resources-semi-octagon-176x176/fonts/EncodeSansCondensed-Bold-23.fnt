@@ -1,0 +1,17 @@
+info face="EncodeSansCondensed-Bold.ttf" size=23 bold=0 italic=0 charset="" unicode=0 stretchH=100 smooth=1 aa=1 padding=0,0,0,0 spacing=2,1
+common lineHeight=29 base=24 scaleW=169 scaleH=29 pages=1 packed=0
+page id=0 file="EncodeSansCondensed-Bold-23.png"
+chars count=13
+char id=44 x=0 y=0 width=6 height=29 xoffset=0 yoffset=0 xadvance=6 page=0 chnl=15
+char id=97 x=8 y=0 width=12 height=29 xoffset=0 yoffset=0 xadvance=12 page=0 chnl=15
+char id=101 x=22 y=0 width=11 height=29 xoffset=0 yoffset=0 xadvance=11 page=0 chnl=15
+char id=102 x=35 y=0 width=8 height=29 xoffset=0 yoffset=0 xadvance=8 page=0 chnl=15
+char id=103 x=45 y=0 width=13 height=29 xoffset=0 yoffset=0 xadvance=13 page=0 chnl=15
+char id=104 x=60 y=0 width=13 height=29 xoffset=0 yoffset=0 xadvance=13 page=0 chnl=15
+char id=105 x=75 y=0 width=6 height=29 xoffset=0 yoffset=0 xadvance=6 page=0 chnl=15
+char id=109 x=83 y=0 width=19 height=29 xoffset=0 yoffset=0 xadvance=19 page=0 chnl=15
+char id=110 x=104 y=0 width=13 height=29 xoffset=0 yoffset=0 xadvance=13 page=0 chnl=15
+char id=111 x=119 y=0 width=12 height=29 xoffset=0 yoffset=0 xadvance=12 page=0 chnl=15
+char id=114 x=133 y=0 width=9 height=29 xoffset=0 yoffset=0 xadvance=9 page=0 chnl=15
+char id=116 x=144 y=0 width=9 height=29 xoffset=0 yoffset=0 xadvance=9 page=0 chnl=15
+char id=118 x=155 y=0 width=12 height=29 xoffset=0 yoffset=0 xadvance=12 page=0 chnl=15
