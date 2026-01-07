@@ -1,14 +1,10 @@
 [
     {
-        "fontCharset": "0123456789:. ",
-        "fontId": "HourFont"
+        "fontCharset": ",aefghimnortv",
+        "fontId": "DaynightFont"
     },
     {
-        "fontCharset": "0123456789:. ",
-        "fontId": "MinuteFont"
-    },
-    {
-        "fontCharset": "0123456789:. ",
-        "fontId": "StandardTimeFont"
+        "fontCharset": "DGadeor!",
+        "fontId": "DefaultFont"
     }
 ]

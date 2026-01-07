@@ -26,10 +26,10 @@ class DaynightView extends WatchUi.WatchFace {
         dc.setColor(Graphics.COLOR_BLACK, Graphics.COLOR_WHITE);
         dc.fillRectangle(0, 0, dc.getWidth(), dc.getHeight());
 
-        _daynight
-            .forTime(System.getClockTime())
+        var time = System.getClockTime();
+       _daynight
+            .forTime(time)
             .draw(dc);
-
 
     }
 

@@ -1,6 +1,6 @@
 # Garmin Daynight Time
 
-A minimalist, elegant, nerdy Garmin Connect IQ watch face that displays the current time as a day-night gauge.
+A minimalist, elegant, nerdy Garmin Connect IQ watch face that displays the current time as a position of the sun along a day-night circle.
 
 ![Daynight Time](resources/graphics/DaynightTimeHero-small.png)
 
@@ -24,6 +24,20 @@ Available from [Garmin Connect IQ Developer portal](https://apps.garmin.com/apps
 
 ## Daynight time
 
+Daynight Time uses information about the sunrise and sunset at the current location on the current date to draw a circle with yellow indicating the duration of the day, and blue indicating the duration of the night.
+It also draws a circle, symbolising the position of the sun in the sky (or under the horizon).
+The sun is colored differently for night, morning, afternoon, and evening hours.
+
+In addition, Daynight Time displays a greeting, using the time of day to choose an appropriate greeting text.
+
+For the purpose of Daynight Time, the names of time of day re defined a follows:
+
+| Time of day | From    | To      |
+| :---------- | :-----: | :-----: |
+| Morning     | Sunrise | Noon    |
+| Afternoon   | Noon    | Sunset  |
+| Evening     | Sunset  | 8PM     |
+| Night       | 8PM     | Sunrise |
 
 
 ## Features
@@ -32,13 +46,16 @@ The Daynight Time watch face supports the following features:
 
 |Screenshot|Description|
 |-|:-|
-{blank:features}
+|![](resources/graphics/DaynightTime1.png)|**Day-Night outline**<br/> The duration of day and night are indicated by the yellow and blue colors. The current time of day is indicated by the sun circle.|
+|![](resources/graphics/DaynightTime2.png)|**Sun colors**<br/> The sun circle is colored depending on the time of day.|
+|![](resources/graphics/DaynightTime3.png)|**Greeting message**<br/> The greeting message reflects the time of day.|
+|![](resources/graphics/DaynightTime4.png)|**Greeting colors**<br/> The greeting colors match those of the sun circle.|
 
 ## Fonts
 
 The Daynight Time watch face uses custom fonts:
 
-{blank:fonts}
+* [EncodeSansCondensed](https://fonts.google.com/specimen/Encode+Sans+Condensed) SemiBold (`Good`, `Dear!`) and Bold (time of day).
 
 > The development of Garmin watch faces motivated the implementation of two useful tools:
 > * A TTF to FNT+PNG converter ([`ttf2bmp`](https://github.com/wkusnierczyk/ttf2bmp)).  
@@ -56,7 +73,34 @@ The font development proceeded as follows:
 
 The table below lists all font sizes provided for the supported screen resolutions.
 
-{blank:font-table}
+| Resolution |    Shape     | Element  |             Font             | Size |
+| ---------: | :----------- | :------- | :--------------------------- | ---: |
+|  148 x 205 | rectangle    | Daynight | EncodeSansCondensed bold     |   20 |
+|  148 x 205 | rectangle    | Default  | EncodeSansCondensed semibold |   16 |
+|  176 x 176 | semi-octagon | Daynight | EncodeSansCondensed bold     |   23 |
+|  176 x 176 | semi-octagon | Default  | EncodeSansCondensed semibold |   19 |
+|  215 x 180 | semi-round   | Daynight | EncodeSansCondensed bold     |   24 |
+|  215 x 180 | semi-round   | Default  | EncodeSansCondensed semibold |   20 |
+|  218 x 218 | round        | Daynight | EncodeSansCondensed bold     |   29 |
+|  218 x 218 | round        | Default  | EncodeSansCondensed semibold |   24 |
+|  240 x 240 | round        | Daynight | EncodeSansCondensed bold     |   32 |
+|  240 x 240 | rectangle    | Daynight | EncodeSansCondensed bold     |   32 |
+|  240 x 240 | round        | Default  | EncodeSansCondensed semibold |   26 |
+|  240 x 240 | rectangle    | Default  | EncodeSansCondensed semibold |   26 |
+|  260 x 260 | round        | Daynight | EncodeSansCondensed bold     |   34 |
+|  260 x 260 | round        | Default  | EncodeSansCondensed semibold |   29 |
+|  280 x 280 | round        | Daynight | EncodeSansCondensed bold     |   37 |
+|  280 x 280 | round        | Default  | EncodeSansCondensed semibold |   31 |
+|  320 x 360 | rectangle    | Daynight | EncodeSansCondensed bold     |   42 |
+|  320 x 360 | rectangle    | Default  | EncodeSansCondensed semibold |   35 |
+|  360 x 360 | round        | Daynight | EncodeSansCondensed bold     |   48 |
+|  360 x 360 | round        | Default  | EncodeSansCondensed semibold |   40 |
+|  390 x 390 | round        | Daynight | EncodeSansCondensed bold     |   52 |
+|  390 x 390 | round        | Default  | EncodeSansCondensed semibold |   43 |
+|  416 x 416 | round        | Daynight | EncodeSansCondensed bold     |   55 |
+|  416 x 416 | round        | Default  | EncodeSansCondensed semibold |   46 |
+|  454 x 454 | round        | Daynight | EncodeSansCondensed bold     |   60 |
+|  454 x 454 | round        | Default  | EncodeSansCondensed semibold |   50 |
 
 ## Build, test, deploy
 

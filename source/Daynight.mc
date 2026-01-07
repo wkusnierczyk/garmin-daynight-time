@@ -1,3 +1,4 @@
+using Toybox.Application;
 using Toybox.Graphics;
 using Toybox.Math;
 using Toybox.Position;
@@ -12,13 +13,19 @@ import Toybox.Lang;
 
 class Daynight {
 
+    private static const DEFAULT_TEXT_FONT = Application.loadResource(Rez.Fonts.DefaultFont);
+    private static const DEFAULT_DAYNIGHT_FONT = Application.loadResource(Rez.Fonts.DaynightFont);
+
     private static const DEFAULT_LATTITUDE = 47.3299;
     private static const DEFAULT_LONGITUDE = 8.6240;
 
     private static const DEFAULT_SUNRISE_MOMENT = Time.now();
     private static const DEFAULT_SUNSET_MOMENT = DEFAULT_SUNRISE_MOMENT;
 
+    private static const DEFAULT_MORNING_COLOR = Graphics.COLOR_ORANGE;
     private static const DEFAULT_DAY_COLOR = 0xFF9500;
+    private static const DEFAULT_AFTERNOON_COLOR = DEFAULT_DAY_COLOR;
+    private static const DEFAULT_EVENING_COLOR = Graphics.COLOR_RED;
     private static const DEFAULT_NIGHT_COLOR = 0x007AFF;
     private static const DEFAULT_TWILIGHT_COLOR = Graphics.COLOR_ORANGE;
     private static const DEFAULT_TEXT_COLOR = Graphics.COLOR_WHITE;
@@ -31,11 +38,11 @@ class Daynight {
     private static const DEFAULT_AFTERNOON_TEXT = "afternoon";
     private static const DEFAULT_EVENING_TEXT = "evening";
     private static const DEFAULT_NIGHT_TEXT = "night";
-    private static const DEFAULT_ADDRESS_TEXT = "Dear";
+    private static const DEFAULT_ADDRESS_TEXT = "Dear!";
+
+    private static const DEFAULT_VERTICAL_TEXT_SHIFT_FACTOR = 0.75;
     
 
-    private var _latitude as Float = DEFAULT_LATTITUDE;
-    private var _longitude as Float = DEFAULT_LONGITUDE;
     private var _location as Position.Location;
 
     // private var _dawnMoment as Time.Moment;
@@ -47,7 +54,7 @@ class Daynight {
     private var _nightColor as Graphics.ColorType = DEFAULT_NIGHT_COLOR;
     // private var _twilightColor as Graphics.ColorType = DEFAULT_TWILIGHT_COLOR;
 
-    private var _clock as System.ClockTime = System.getClockTime();
+    private var _time as System.ClockTime = System.getClockTime();
 
     function initialize() {
         _location = new Position.Location({
@@ -60,6 +67,7 @@ class Daynight {
     }
 
     private function _refershLocation() as Daynight {
+        // TODO: enable for deployment
         // var position_info = Position.getInfo();
         // if (position_info has :position && position_info.position != null) {
         //     _location = position_info.position;
@@ -96,7 +104,7 @@ class Daynight {
 
 
     function forTime(time as System.ClockTime) as Daynight {
-        _clock = time;
+        _time = time;
         return self;
     }
 
@@ -130,39 +138,53 @@ class Daynight {
         dc.setColor(_nightColor, Graphics.COLOR_TRANSPARENT);
         dc.drawArc(centerX, centerY, radius, Graphics.ARC_CLOCKWISE, nightStartAngle, nightEndAngle);
 
-        var currentHour = _clock.hour;
-        var currentMinute = _clock.min;
+        var currentHour = _time.hour;
+        var currentMinute = _time.min;
 
         var currentTimeAngle = _timeToAngle(currentHour, currentMinute);
         var sunCoordinates = _toCartesian((0.8 * radius).toNumber(), currentTimeAngle);
 
         var sunriseMinutes = sunriseHour * 60 + sunriseMinute;
         var sunsetMinutes = sunsetHour * 60 + sunsetMinute;
-        var currentTimeMinutes = currentHour * 60 + currentMinute;
+        var currentMinutes = currentHour * 60 + currentMinute;
 
         var noonMinutes = 12 * 60;
-        var midnightMinutes = 0;
+        var eveningMinutes = 22 * 60;
+        // var midnightMinutes = 23 * 60 + 59;
 
-        var text = "";
+        var daynight = "day";
+        var sunColor = DEFAULT_TWILIGHT_COLOR;
 
-        if (currentTimeMinutes < sunriseMinutes) {
-            text = DEFAULT_NIGHT_TEXT;
-            dc.setColor(DEFAULT_NIGHT_COLOR, Graphics.COLOR_TRANSPARENT);
-        } else if (currentTimeMinutes >= sunriseMinutes and currentTimeMinutes <= noonMinutes) {
-            text = DEFAULT_MORNING_TEXT;
-            dc.setColor(DEFAULT_DAY_COLOR, Graphics.COLOR_TRANSPARENT);
-        } else if (currentTimeMinutes > noonMinutes and currentTimeMinutes <= sunsetMinutes) {
-            text = DEFAULT_AFTERNOON_TEXT;
-            dc.setColor(DEFAULT_DAY_COLOR, Graphics.COLOR_TRANSPARENT);
-        } else if (currentTimeMinutes > sunsetMinutes and currentTimeMinutes < midnightMinutes) {
-            text = DEFAULT_EVENING_TEXT;
-            dc.setColor(DEFAULT_NIGHT_COLOR, Graphics.COLOR_TRANSPARENT);
+        if (currentMinutes < sunriseMinutes or currentMinutes >= eveningMinutes) {
+            daynight = DEFAULT_NIGHT_TEXT;
+            sunColor = DEFAULT_NIGHT_COLOR;
+        } else if (currentMinutes >= sunriseMinutes and currentMinutes <= noonMinutes) {
+            daynight = DEFAULT_MORNING_TEXT;
+            sunColor = DEFAULT_MORNING_COLOR;
+        } else if (currentMinutes > noonMinutes and currentMinutes <= sunsetMinutes) {
+            daynight = DEFAULT_AFTERNOON_TEXT;
+            sunColor = DEFAULT_AFTERNOON_COLOR;
+        } else if (currentMinutes > sunsetMinutes and currentMinutes < eveningMinutes) {
+            daynight = DEFAULT_EVENING_TEXT;
+            sunColor = DEFAULT_EVENING_COLOR;
         }
 
+        dc.setColor(sunColor, Graphics.COLOR_TRANSPARENT);
         dc.fillCircle(centerX + sunCoordinates[0], centerY + sunCoordinates[1], DEFAULT_THICKNESS_FACTOR * radius);
         
+        var daynightDimensions = dc.getTextDimensions(daynight, DEFAULT_DAYNIGHT_FONT);
+        var daynightWidth = daynightDimensions[0];
+        var daynightHeight = daynightDimensions[1];
+        var verticalShift = DEFAULT_VERTICAL_TEXT_SHIFT_FACTOR * daynightHeight;
+        var daynightX = centerX - daynightWidth / 2;
+
         dc.setColor(DEFAULT_TEXT_COLOR, Graphics.COLOR_TRANSPARENT);
-        dc.drawText(centerX, centerY, Graphics.FONT_MEDIUM, text, Graphics.TEXT_JUSTIFY_CENTER | Graphics.TEXT_JUSTIFY_VCENTER);
+        dc.drawText(centerX, centerY - verticalShift, DEFAULT_TEXT_FONT, DEFAULT_GREETING_TEXT, Graphics.TEXT_JUSTIFY_CENTER | Graphics.TEXT_JUSTIFY_VCENTER);
+        dc.drawText(centerX, centerY + verticalShift, DEFAULT_TEXT_FONT, DEFAULT_ADDRESS_TEXT, Graphics.TEXT_JUSTIFY_CENTER | Graphics.TEXT_JUSTIFY_VCENTER);
+        dc.drawText(daynightX + daynightWidth, centerY, DEFAULT_DAYNIGHT_FONT, ",", Graphics.TEXT_JUSTIFY_LEFT | Graphics.TEXT_JUSTIFY_VCENTER);
+
+        dc.setColor(sunColor, Graphics.COLOR_TRANSPARENT);
+        dc.drawText(daynightX, centerY, DEFAULT_DAYNIGHT_FONT, daynight, Graphics.TEXT_JUSTIFY_LEFT | Graphics.TEXT_JUSTIFY_VCENTER);
 
         return self;
     }
