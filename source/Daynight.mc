@@ -153,20 +153,25 @@ class Daynight {
         // var midnightMinutes = 23 * 60 + 59;
 
         var daynight = "day";
+        var daynightColor = DEFAULT_TEXT_COLOR;
         var sunColor = DEFAULT_TWILIGHT_COLOR;
 
         if (currentMinutes < sunriseMinutes or currentMinutes >= eveningMinutes) {
             daynight = DEFAULT_NIGHT_TEXT;
+            daynightColor = DEFAULT_NIGHT_COLOR;
             sunColor = DEFAULT_NIGHT_COLOR;
         } else if (currentMinutes >= sunriseMinutes and currentMinutes <= noonMinutes) {
             daynight = DEFAULT_MORNING_TEXT;
-            sunColor = DEFAULT_MORNING_COLOR;
+            daynightColor = DEFAULT_MORNING_COLOR;
+            sunColor = DEFAULT_DAY_COLOR;
         } else if (currentMinutes > noonMinutes and currentMinutes <= sunsetMinutes) {
             daynight = DEFAULT_AFTERNOON_TEXT;
-            sunColor = DEFAULT_AFTERNOON_COLOR;
+            daynightColor = DEFAULT_AFTERNOON_COLOR;
+            sunColor = DEFAULT_DAY_COLOR;
         } else if (currentMinutes > sunsetMinutes and currentMinutes < eveningMinutes) {
             daynight = DEFAULT_EVENING_TEXT;
-            sunColor = DEFAULT_EVENING_COLOR;
+            daynightColor = DEFAULT_EVENING_COLOR;
+            sunColor = DEFAULT_NIGHT_COLOR;
         }
 
         dc.setColor(sunColor, Graphics.COLOR_TRANSPARENT);
@@ -183,7 +188,7 @@ class Daynight {
         dc.drawText(centerX, centerY + verticalShift, DEFAULT_TEXT_FONT, DEFAULT_ADDRESS_TEXT, Graphics.TEXT_JUSTIFY_CENTER | Graphics.TEXT_JUSTIFY_VCENTER);
         dc.drawText(daynightX + daynightWidth, centerY, DEFAULT_DAYNIGHT_FONT, ",", Graphics.TEXT_JUSTIFY_LEFT | Graphics.TEXT_JUSTIFY_VCENTER);
 
-        dc.setColor(sunColor, Graphics.COLOR_TRANSPARENT);
+        dc.setColor(daynightColor, Graphics.COLOR_TRANSPARENT);
         dc.drawText(daynightX, centerY, DEFAULT_DAYNIGHT_FONT, daynight, Graphics.TEXT_JUSTIFY_LEFT | Graphics.TEXT_JUSTIFY_VCENTER);
 
         return self;
