@@ -2,7 +2,7 @@
 
 A minimalist, elegant, nerdy Garmin Connect IQ watch face that displays the current time as a position of the sun along a day-night circle.
 
-![Daynight Time](resources/graphics/DaynightTimeHero-small.png)
+![Daynight Time](resources/graphics/DaynightTimeHero2-small.png)
 
 Available from [Garmin Connect IQ Developer portal](https://apps.garmin.com/apps/b46eb668-f495-4db4-8f98-f28a4bd9cca5) or through the Connect IQ mobile app.
 
@@ -28,6 +28,9 @@ Daynight Time uses information about the sunrise and sunset at the current locat
 It also draws a circle, symbolising the position of the sun in the sky (or under the horizon).
 The sun is colored differently for night, morning, afternoon, and evening hours.
 
+> **Note**  
+> Full turn corresponds to 24 hours. Thus, the sun at the west indicates 6AM, not 3AM; east indicates 6PM, not 3PM; south indicates midnight, not 6PM; and so on.
+
 In addition, Daynight Time displays a greeting, using the time of day to choose an appropriate greeting text.
 
 For the purpose of Daynight Time, the names of time of day re defined a follows:
@@ -46,10 +49,18 @@ The Daynight Time watch face supports the following features:
 
 |Screenshot|Description|
 |-|:-|
-|![](resources/graphics/DaynightTime1.png)|**Day-Night outline**<br/> The duration of day and night are indicated by the yellow and blue colors. The current time of day is indicated by the sun circle.|
-|![](resources/graphics/DaynightTime2.png)|**Sun colors**<br/> The sun circle is colored depending on the time of day.|
-|![](resources/graphics/DaynightTime3.png)|**Greeting message**<br/> The greeting message reflects the time of day.|
-|![](resources/graphics/DaynightTime4.png)|**Greeting colors**<br/> The greeting colors match those of the sun circle.|
+|![](resources/graphics/DaynightTime5.png)|**Day-Night outline**<br/> The duration of day and night are indicated by the yellow and blue colors. The current time of day is indicated by the sun circle.|
+|![](resources/graphics/DaynightTime6.png)|**Sun colors**<br/> The sun circle is colored depending on the time of day.|
+|![](resources/graphics/DaynightTime7.png)|**Greeting message**<br/> The greeting message reflects the time of day.|
+|![](resources/graphics/DaynightTime8.png)|**Greeting colors**<br/> The greeting colors match those of the sun circle.|
+
+> **Limitations**  
+> * The twilight indicators (short orange parts of the outline between the day and night parts) are _not_ proportional to the actual duration of twilight. 
+> The are not calculated based on actual dawn and dusk times, but rather have fixed length and are for decorative purposes only. 
+> * The edge cases of polar night and polar day are not handled.
+> The look of the watch face during such events is undefined.
+>
+> Future versions may fix both issues.
 
 ## Fonts
 

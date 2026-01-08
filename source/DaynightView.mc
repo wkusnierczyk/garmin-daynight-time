@@ -19,15 +19,17 @@ class DaynightView extends WatchUi.WatchFace {
         setLayout(Rez.Layouts.WatchFace(dc));
     }
 
-    function onShow() {
-    }
-
     function onUpdate(dc) {
 
         dc.setColor(Graphics.COLOR_BLACK, Graphics.COLOR_WHITE);
         dc.fillRectangle(0, 0, dc.getWidth(), dc.getHeight());
 
         var time = System.getClockTime();
+
+        if (CS.DEBUG) {
+            time.hour = 9;
+            time.min = 0;
+        }        
 
        _daynight
             .forTime(time)

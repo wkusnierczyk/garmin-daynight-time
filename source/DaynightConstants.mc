@@ -6,9 +6,9 @@ import Toybox.Lang;
 module Constants {
 
     (:debug)
-    const IS_DEBUG_BUILD = true;
+    const DEBUG = true;
     (:release)
-    const IS_SIMULATOR_BUILD = false;
+    const DEBUG = false;
 
     const CUSTOMIZE_MENU_TITLE = Application.loadResource(Rez.Strings.SettingsMenuTitle) as String;
 
