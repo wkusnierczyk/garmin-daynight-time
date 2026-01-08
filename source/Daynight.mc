@@ -63,14 +63,16 @@ class Daynight {
             :longitude => DEFAULT_LONGITUDE,
             :format => :degrees
         });
-        _refershLocation(); // disable for simulation
+        _refershLocation();
         _refreshSunData();
     }
 
     private function _refershLocation() as Daynight {
-        var position_info = Position.getInfo();
-        if (position_info has :position && position_info.position != null) {
-            _location = position_info.position;
+        if (!CS.IS_SIMULATOR_BUILD) {
+            var position_info = Position.getInfo();
+            if (position_info has :position && position_info.position != null) {
+                _location = position_info.position;
+            }
         }
         return self;
     }
