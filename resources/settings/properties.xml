@@ -2,4 +2,10 @@
 
     <property id="SunColor" type="number">0</property>
 
+    <property id="GreetingTimes" type="number">0</property>
+
+    <property id="MorningStartHour" type="number">6</property>
+    <property id="EveningStartHour" type="number">18</property>
+    <property id="NightStartHour" type="number">24</property>
+ 
 </properties>

@@ -26,14 +26,14 @@ class DaynightView extends WatchUi.WatchFace {
 
         var time = System.getClockTime();
 
-        if (CS.IS_SIMULATOR_BUILD) {
+        if (CS.DEBUG) {
             time.hour = 9;
             time.min = 0;
         }        
 
        _daynight
             .forTime(time)
-            .draw(dc);\
+            .draw(dc);
 
     }
 
