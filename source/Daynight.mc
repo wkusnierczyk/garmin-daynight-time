@@ -30,11 +30,15 @@ class Daynight {
     private static const DEFAULT_NIGHT_COLOR = 0x007AFF;
     private static const DEFAULT_TWILIGHT_COLOR = Graphics.COLOR_ORANGE;
     private static const DEFAULT_TEXT_COLOR = Graphics.COLOR_WHITE;
+    private static const DEFAULT_OUTLINE_GAP_COLOR = Graphics.COLOR_ORANGE;
 
     private static const DEFAULT_RADIUS_FACTOR = 0.9;
     private static const DEFAULT_THICKNESS_FACTOR = 0.1;
+    private static const DEFAULT_GAP_ANGLE = 1;
+    private static const DEFAULT_TWILIGHT_ANGLE = 8;
 
     private static const DEFAULT_GREETING_TEXT = "Good";
+    private static const DEFAULT_DAY_TEXT = "day";
     private static const DEFAULT_MORNING_TEXT = "morning";
     private static const DEFAULT_AFTERNOON_TEXT = "afternoon";
     private static const DEFAULT_EVENING_TEXT = "evening";
@@ -129,16 +133,23 @@ class Daynight {
         var sunsetHour = sunsetInfo.hour;
         var sunsetMinute = sunsetInfo.min;
 
-        var dayStartAngle = _timeToAngle(sunriseHour, sunriseMinute);
-        var dayEndAngle = _timeToAngle(sunsetHour, sunsetMinute);
-        var nightStartAngle = dayEndAngle;
-        var nightEndAngle = dayStartAngle;
+        var angleCorrection = DEFAULT_GAP_ANGLE + DEFAULT_TWILIGHT_ANGLE / 2;
+        var dayStartAngle = _timeToAngle(sunriseHour, sunriseMinute) - angleCorrection;
+        var dayEndAngle = _timeToAngle(sunsetHour, sunsetMinute) + angleCorrection;
+        var nightStartAngle = dayEndAngle - angleCorrection;
+        var nightEndAngle = dayStartAngle + angleCorrection;
 
         dc.setPenWidth((DEFAULT_THICKNESS_FACTOR * radius).toNumber());
+        
         dc.setColor(_dayColor, Graphics.COLOR_TRANSPARENT);
         dc.drawArc(centerX, centerY, radius, Graphics.ARC_CLOCKWISE, dayStartAngle, dayEndAngle);
+        
         dc.setColor(_nightColor, Graphics.COLOR_TRANSPARENT);
         dc.drawArc(centerX, centerY, radius, Graphics.ARC_CLOCKWISE, nightStartAngle, nightEndAngle);
+
+        dc.setColor(DEFAULT_TWILIGHT_COLOR, Graphics.COLOR_TRANSPARENT);
+        dc.drawArc(centerX, centerY, radius, Graphics.ARC_CLOCKWISE, dayEndAngle - DEFAULT_GAP_ANGLE, nightStartAngle + DEFAULT_GAP_ANGLE);
+        dc.drawArc(centerX, centerY, radius, Graphics.ARC_CLOCKWISE, nightEndAngle - DEFAULT_GAP_ANGLE, dayStartAngle + DEFAULT_GAP_ANGLE);
 
         var currentHour = _time.hour;
         var currentMinute = _time.min;
