@@ -5,6 +5,11 @@ import Toybox.Lang;
 
 module Constants {
 
+    (:debug)
+    const IS_SIMULATOR_BUILD = true;
+    (:release)
+    const IS_SIMULATOR_BUILD = false;
+
     const CUSTOMIZE_MENU_TITLE = Application.loadResource(Rez.Strings.SettingsMenuTitle) as String;
 
     const SUN_COLOR_MENU_TITLE = Application.loadResource(Rez.Strings.SunColorTitle) as String;
