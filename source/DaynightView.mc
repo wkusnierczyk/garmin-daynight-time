@@ -2,8 +2,9 @@ using Toybox.Application.Properties;
 using Toybox.Graphics;
 using Toybox.WatchUi;
 
-
 import Toybox.Lang;
+
+using Constants as CS;
 
 
 class DaynightView extends WatchUi.WatchFace {
@@ -27,6 +28,7 @@ class DaynightView extends WatchUi.WatchFace {
         dc.fillRectangle(0, 0, dc.getWidth(), dc.getHeight());
 
         var time = System.getClockTime();
+
        _daynight
             .forTime(time)
             .draw(dc);

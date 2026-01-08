@@ -10,6 +10,7 @@ using Toybox.Weather;
 import Toybox.Lang;
 
 using Constants as CS;
+using PropertyUtils as PU;
 
 
 class Daynight {
@@ -39,6 +40,7 @@ class Daynight {
     private static const DEFAULT_AFTERNOON_TEXT = "afternoon";
     private static const DEFAULT_EVENING_TEXT = "evening";
     private static const DEFAULT_NIGHT_TEXT = "night";
+    private static const DEFAULT_DAY_TEXT = "day";
     private static const DEFAULT_ADDRESS_TEXT = "Dear!";
 
     private static const DEFAULT_VERTICAL_TEXT_SHIFT_FACTOR = 0.75;
@@ -68,11 +70,9 @@ class Daynight {
     }
 
     private function _refershLocation() as Daynight {
-        if (!CS.IS_SIMULATOR_BUILD) {
-            var position_info = Position.getInfo();
-            if (position_info has :position && position_info.position != null) {
-                _location = position_info.position;
-            }
+        var position_info = Position.getInfo();
+        if (position_info has :position && position_info.position != null) {
+            _location = position_info.position;
         }
         return self;
     }
@@ -131,8 +131,9 @@ class Daynight {
 
         var dayStartAngle = _timeToAngle(sunriseHour, sunriseMinute);
         var dayEndAngle = _timeToAngle(sunsetHour, sunsetMinute);
-        var nightStartAngle = dayEndAngle;
-        var nightEndAngle = dayStartAngle;
+        var dayNightGap = 1;
+        var nightStartAngle = dayEndAngle - dayNightGap;
+        var nightEndAngle = dayStartAngle + dayNightGap;
 
         dc.setPenWidth((DEFAULT_THICKNESS_FACTOR * radius).toNumber());
         dc.setColor(_dayColor, Graphics.COLOR_TRANSPARENT);
@@ -142,42 +143,65 @@ class Daynight {
 
         var currentHour = _time.hour;
         var currentMinute = _time.min;
+        var currentMinutes = currentHour * 60 + currentMinute;
 
         var currentTimeAngle = _timeToAngle(currentHour, currentMinute);
         var sunCoordinates = _toCartesian((0.8 * radius).toNumber(), currentTimeAngle);
 
         var sunriseMinutes = sunriseHour * 60 + sunriseMinute;
         var sunsetMinutes = sunsetHour * 60 + sunsetMinute;
-        var currentMinutes = currentHour * 60 + currentMinute;
+        var sunColor = DEFAULT_TWILIGHT_COLOR;
+        if (currentMinutes < sunriseMinutes or currentMinutes >= sunsetMinutes) {
+            sunColor = DEFAULT_NIGHT_COLOR;
+        } else if (currentMinutes >= sunriseMinutes and currentMinutes <= sunsetMinutes) {
+            sunColor = DEFAULT_DAY_COLOR;
+        }
 
         var noonMinutes = 12 * 60;
         var eveningMinutes = 22 * 60;
-        // var midnightMinutes = 23 * 60 + 59;
-
-        var greeting = "day";
+        
+        var greeting = DEFAULT_DAY_TEXT;
         var greetingColor = DEFAULT_TEXT_COLOR;
-        var sunColor = DEFAULT_TWILIGHT_COLOR;
+        var greetingTimes = PU.getPropertyElseDefault(CS.GREETING_TIMES_PROPERTY_ID, CS.GREETING_TIMES_PROPERTY_DEFAULT);
+        if (greetingTimes == 0) { // set sun color using adaptive times (sunrise, noon, sunset, midnight)
 
-        if (currentMinutes < sunriseMinutes or currentMinutes >= eveningMinutes) {
-            greeting = DEFAULT_NIGHT_TEXT;
-            greetingColor = DEFAULT_NIGHT_COLOR;
-            sunColor = DEFAULT_NIGHT_COLOR;
-        } else if (currentMinutes >= sunriseMinutes and currentMinutes <= noonMinutes) {
-            greeting = DEFAULT_MORNING_TEXT;
-            greetingColor = DEFAULT_MORNING_COLOR;
-            sunColor = DEFAULT_DAY_COLOR;
-        } else if (currentMinutes > noonMinutes and currentMinutes <= sunsetMinutes) {
-            greeting = DEFAULT_AFTERNOON_TEXT;
-            greetingColor = DEFAULT_AFTERNOON_COLOR;
-            sunColor = DEFAULT_DAY_COLOR;
-        } else if (currentMinutes > sunsetMinutes and currentMinutes < eveningMinutes) {
-            greeting = DEFAULT_EVENING_TEXT;
-            greetingColor = DEFAULT_EVENING_COLOR;
-            sunColor = DEFAULT_NIGHT_COLOR;
+            if (currentMinutes < sunriseMinutes or currentMinutes >= eveningMinutes) {
+                greeting = DEFAULT_NIGHT_TEXT;
+                greetingColor = DEFAULT_NIGHT_COLOR;
+            } else if (currentMinutes >= sunriseMinutes and currentMinutes <= noonMinutes) {
+                greeting = DEFAULT_MORNING_TEXT;
+                greetingColor = DEFAULT_MORNING_COLOR;
+            } else if (currentMinutes > noonMinutes and currentMinutes <= sunsetMinutes) {
+                greeting = DEFAULT_AFTERNOON_TEXT;
+                greetingColor = DEFAULT_AFTERNOON_COLOR;
+            } else if (currentMinutes > sunsetMinutes and currentMinutes < eveningMinutes) {
+                greeting = DEFAULT_EVENING_TEXT;
+                greetingColor = DEFAULT_EVENING_COLOR;
+            }
+        
+        } else { // set sun color using user-fixed times (morning stert/end, evening start/end)
+
+            var morningStartMinutes = 60 * PU.getPropertyElseDefault(CS.MORNING_START_HOUR_PROPERTY_ID, CS.MORNING_START_HOUR_DEFAULT);
+            var eveningStartMinutes = 60 * PU.getPropertyElseDefault(CS.EVENING_START_HOUR_PROPERTY_ID, CS.EVENING_START_HOUR_PROPERTY_DEFAULT);
+            var nightStartMinutes = 60 * PU.getPropertyElseDefault(CS.NIGHT_START_HOUR_PROPERTY_ID, CS.NIGHT_START_HOUR_PROPERTY_DEFAULT);
+
+            if (currentMinutes < morningStartMinutes or currentMinutes >= nightStartMinutes) {
+                greeting = DEFAULT_NIGHT_TEXT;
+                greetingColor = DEFAULT_NIGHT_COLOR;
+            } else if (currentMinutes >= morningStartMinutes and currentMinutes <= noonMinutes) {
+                greeting = DEFAULT_MORNING_TEXT;
+                greetingColor = DEFAULT_MORNING_COLOR;
+            } else if (currentMinutes > noonMinutes and currentMinutes <= eveningStartMinutes) {
+                greeting = DEFAULT_AFTERNOON_TEXT;
+                greetingColor = DEFAULT_AFTERNOON_COLOR;
+            } else if (currentMinutes > eveningStartMinutes and currentMinutes < nightStartMinutes) {
+                greeting = DEFAULT_EVENING_TEXT;
+                greetingColor = DEFAULT_EVENING_COLOR;
+            }
         }
 
-        var sunColorIndex = PropertyUtils.getPropertyElseDefault(CS.SUN_COLOR_PROPERTY_ID, CS.SUN_COLOR_PROPERTY_DEFAULT);
-        if (sunColorIndex == 1) { // sun color = greeting color
+        var sunColorOption = PU.getPropertyElseDefault(CS.SUN_COLOR_PROPERTY_ID, CS.SUN_COLOR_PROPERTY_DEFAULT);
+        if (sunColorOption == 1) { // sun color = greeting color
             sunColor = greetingColor;
         }
         

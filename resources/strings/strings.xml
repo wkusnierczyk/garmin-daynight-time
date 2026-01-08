@@ -13,11 +13,16 @@
         "Daynight greeting"
     ]</jsonData>
 
-<!-- 
-    <string id="MorningHourLabel">Morning start hour</string>
-    <string id="AfternoonHourLabel">Afternoon start hour</string>
-    <string id="EveningHourLabel">Evening start hour</string>
-    <string id="NightHourLabel">Night start hour</string>
- -->
+    <string id="GreetingTimesTitle">Greeting Cutoff Times</string>
+    <string id="AdaptiveGreetingTimes">Adaptive</string>
+    <string id="FixedGreetingTimes">Fixed</string>
+    <jsonData id="GreetingTimesNames">[
+        "Adaptive",
+        "Fixed"
+    ]</jsonData>
+
+    <string id="MorningStartHourLabel">Morning start hour</string>
+    <string id="EveningStartHourLabel">Evening start hour</string>
+    <string id="NightStartHourLabel">Night start hour</string>
 
 </resources>

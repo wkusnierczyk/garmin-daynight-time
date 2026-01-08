@@ -6,23 +6,24 @@
             <listEntry value="1">@Strings.SunColorGreeting</listEntry>
         </settingConfig>
     </setting>
-
-<!--     
-    <setting propertyKey="@Properties.MorningHour" title="@Strings.MorningHourLabel">
-        <settingConfig type="numeric" min="0" max="12"/>
+    
+    <setting propertyKey="@Properties.GreetingTimes" title="@Strings.GreetingTimesTitle">
+        <settingConfig type="list">
+            <listEntry value="0">@Strings.AdaptiveGreetingTimes</listEntry>
+            <listEntry value="1">@Strings.FixedGreetingTimes</listEntry>
+        </settingConfig>
     </setting>
 
-    <setting propertyKey="@Properties.AfternoonHour" title="@Strings.AfternoonHourLabel">
-        <settingConfig type="numeric" min="12" max="20"/>
+    <setting propertyKey="@Properties.MorningStartHour" title="@Strings.MorningStartHourLabel">
+        <settingConfig type="numeric" min="3" max="9"/>
     </setting>
 
-    <setting propertyKey="@Properties.EveningHour" title="@Strings.EveningHourLabel">
-        <settingConfig type="numeric" min="16" max="24"/>
+    <setting propertyKey="@Properties.EveningStartHour" title="@Strings.EveningStartHourLabel">
+        <settingConfig type="numeric" min="15" max="21"/>
     </setting>
 
-    <setting propertyKey="@Properties.NightHour" title="@Strings.NightHourLabel">
-        <settingConfig type="numeric" min="20" max="8"/>
+    <setting propertyKey="@Properties.NightStartHour" title="@Strings.NightStartHourLabel">
+        <settingConfig type="numeric" min="18" max="24"/>
     </setting>
- -->
- 
+
 </settings>

@@ -6,7 +6,7 @@ import Toybox.Lang;
 module Constants {
 
     (:debug)
-    const IS_SIMULATOR_BUILD = true;
+    const IS_DEBUG_BUILD = true;
     (:release)
     const IS_SIMULATOR_BUILD = false;
 
@@ -17,21 +17,21 @@ module Constants {
     const SUN_COLOR_PROPERTY_ID = "SunColor";
     const SUN_COLOR_PROPERTY_DEFAULT = 0;
 
-    // const MORNING_HOUR_LABEL = Application.loadResource(Rez.Strings.MorningHourLabel);
-    // const MORNING_HOUR_PROPERTY_ID = "MorningHour";
-    // const MORNING_HOUR_PROPERTY_DEFAULT = 6;
+    const GREETING_TIMES_LABEL = Application.loadResource(Rez.Strings.GreetingTimesTitle);
+    const GREETING_TIMES_NAMES = Application.loadResource(Rez.JsonData.GreetingTimesNames) as Array<String>;
+    const GREETING_TIMES_PROPERTY_ID = "GreetingTimes";
+    const GREETING_TIMES_PROPERTY_DEFAULT = 0;
 
-    // const AFTERNOON_HOUR_LABEL = Application.loadResource(Rez.Strings.AfternoonHourLabel);
-    // const AFTERNOON_HOUR_PROPERTY_ID = "AfternoonHour";
-    // const AFTERNOON_HOUR_PROPERTY_DEFAULT = 12;
+    const MORNING_START_HOUR_LABEL = Application.loadResource(Rez.Strings.MorningStartHourLabel);
+    const MORNING_START_HOUR_PROPERTY_ID = "MorningStartHour";
+    const MORNING_START_HOUR_DEFAULT = 6;
 
-    // const EVENING_HOUR_LABEL = Application.loadResource(Rez.Strings.EveningHourLabel);
-    // const EVENING_HOUR_PROPERTY_ID = "EveningHour";
-    // const EVENING_HOUR_PROPERTY_DEFAULT = 18;
+    const EVENING_START_HOUR_LABEL = Application.loadResource(Rez.Strings.EveningStartHourLabel);
+    const EVENING_START_HOUR_PROPERTY_ID = "EveningStartHour";
+    const EVENING_START_HOUR_PROPERTY_DEFAULT = 18;
 
-    // const NIGHT_HOUR_LABEL = Application.loadResource(Rez.Strings.NightHourLabel);
-    // const NIGHT_HOUR_PROPERTY_ID = "NightHour";
-    // const NIGHT_HOUR_PROPERTY_DEFAULT = 24;
-
+    const NIGHT_START_HOUR_LABEL = Application.loadResource(Rez.Strings.NightStartHourLabel);
+    const NIGHT_START_HOUR_PROPERTY_ID = "NightStartHour";
+    const NIGHT_START_HOUR_PROPERTY_DEFAULT = 24;
 
 }
