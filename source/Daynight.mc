@@ -63,7 +63,7 @@ class Daynight {
             :longitude => DEFAULT_LONGITUDE,
             :format => :degrees
         });
-        _refershLocation(); // disable for simulation
+        // _refershLocation(); // disable for simulation
         _refreshSunData();
     }
 

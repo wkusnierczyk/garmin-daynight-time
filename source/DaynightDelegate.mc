@@ -23,6 +23,10 @@ class DaynightDelegate extends WatchUi.Menu2InputDelegate {
             item.setSubLabel(CS.SUN_COLOR_NAMES[newIndex]);
         }
 
+        // if (id.equals(CS.MORNING_HOUR_PROPERTY_ID) && item instanceof WatchUi.MenuItem) {
+        //     var currentMorningHour = PropertyUtils.getPropertyElseDefault(CS.MORNING_HOUR_PROPERTY_ID, CS.MORNING_HOUR_PROPERTY_DEFAULT);
+        // }
+
     }
 
     function onBack() {

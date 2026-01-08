@@ -4,13 +4,20 @@
     <string id="AppName">DaynightTime</string>
     
     <string id="SettingsMenuTitle">Daynight Time</string>
+
     <string id="SunColorTitle">Sun Face Color</string>
     <string id="SunColorOutline">Daynight outline</string>
     <string id="SunColorGreeting">Daynight greeting</string>
-
     <jsonData id="SunColorNames">[
         "Daynight outline",
         "Daynight greeting"
     ]</jsonData>
+
+<!-- 
+    <string id="MorningHourLabel">Morning start hour</string>
+    <string id="AfternoonHourLabel">Afternoon start hour</string>
+    <string id="EveningHourLabel">Evening start hour</string>
+    <string id="NightHourLabel">Night start hour</string>
+ -->
 
 </resources>
