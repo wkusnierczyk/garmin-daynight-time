@@ -30,7 +30,6 @@ class Daynight {
     private static const DEFAULT_NIGHT_COLOR = 0x007AFF;
     private static const DEFAULT_TWILIGHT_COLOR = Graphics.COLOR_ORANGE;
     private static const DEFAULT_TEXT_COLOR = Graphics.COLOR_WHITE;
-    private static const DEFAULT_OUTLINE_GAP_COLOR = Graphics.COLOR_ORANGE;
 
     private static const DEFAULT_RADIUS_FACTOR = 0.9;
     private static const DEFAULT_THICKNESS_FACTOR = 0.1;
@@ -165,7 +164,7 @@ class Daynight {
         var eveningMinutes = 22 * 60;
         // var midnightMinutes = 23 * 60 + 59;
 
-        var greeting = "day";
+        var greeting = DEFAULT_DAY_TEXT;
         var greetingColor = DEFAULT_TEXT_COLOR;
         var sunColor = DEFAULT_TWILIGHT_COLOR;
 
