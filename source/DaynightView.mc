@@ -27,7 +27,7 @@ class DaynightView extends WatchUi.WatchFace {
         var time = System.getClockTime();
 
         if (CS.IS_SIMULATOR_BUILD) {
-            time.hour = 19;
+            time.hour = 9;
             time.min = 0;
         }        
 
