@@ -17,6 +17,7 @@ class Daynight {
 
     private enum GreetingTime {
         MORNING_GREETING_TIME,
+        DAY_GREETING_TIME,
         AFTERNOON_GREETING_TIME,
         EVENING_GREETING_TIME,
         NIGHT_GREETING_TIME
@@ -182,7 +183,7 @@ class Daynight {
 
         var greeting = DEFAULT_DAY_TEXT;
         var greetingColor = DEFAULT_TEXT_COLOR;
-        var greetingType = _activityBasedGreeting();
+        var greetingType = _scheduleBasedGreeting();
         switch (greetingType) {
             case MORNING_GREETING_TIME:
                 greeting = DEFAULT_MORNING_TEXT;
@@ -241,19 +242,9 @@ class Daynight {
     }
 
 
-    // private function _timeToAngle(hour as Number, minutes as Number) as Number {
-    //     return 270 - ((1.0 * hour * 60 + minutes) / (24 * 60) * 360).toNumber();
-    // }
-
     private function _timeToAngle(time as Time.Moment) as Number {
         var info = Gregorian.info(time, Time.FORMAT_SHORT);
         return 270 - ((info.hour * 60.0 + info.min) / (24 * 60) * 360).toNumber();
-    }
-
-
-    private function _toAngle(time as Time.Moment) as Number {
-        var info = Gregorian.info(time, Time.FORMAT_SHORT);
-        return 270 - ((1.0 * info.hour * 60 + info.min) / (24 * 60) * 360).toNumber();
     }
 
 
@@ -273,13 +264,13 @@ class Daynight {
 
 
     // In-app customisation user defined greeting times
-    private function _userDefinedGreeting() as GreetingTime {
+    private function _userSettingGreeting() as GreetingTime {
         // TODO
-        return MORNING_GREETING_TIME;
+        return DAY_GREETING_TIME;
     }
 
 
-    // Daynight adaptive greeting times
+    // Daynight adaptive greeting times base on sunrise and sunset times
     private function _daynightGreeting() as GreetingTime {
         var morning = _sunriseMoment;
         var day = _noon;
@@ -289,8 +280,8 @@ class Daynight {
     }
 
 
-    // Recorded activity-dependent greeting times
-    private function _activityBasedGreeting() as GreetingTime {
+    // Schedule-dependent greeting times
+    private function _scheduleBasedGreeting() as GreetingTime {
         // TODO
         var morning = _getWakeTime();
         var day = Time.today().add(new Time.Duration(12 * 3600));
@@ -299,6 +290,12 @@ class Daynight {
         return _timeBasedGreeting(morning, day, evening, night);
     }
 
+
+    // Activity-dependent greeting times
+    private function _activityBasedGreeting() as GreetingTime {
+        // TODO
+        return DAY_GREETING_TIME;
+    }
 
     private function _timeBasedGreeting(morning as Time.Moment, day as Time.Moment, evening as Time.Moment, night as Time.Moment) as GreetingTime {
         if (day.lessThan(morning)) {

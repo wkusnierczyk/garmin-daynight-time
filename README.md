@@ -29,19 +29,27 @@ It also draws a circle, symbolising the position of the sun in the sky (or under
 The sun is colored differently for night, morning, afternoon, and evening hours.
 
 > **Note**  
-> Full turn corresponds to 24 hours. Thus, the sun at the west indicates 6AM, not 3AM; east indicates 6PM, not 3PM; south indicates midnight, not 6PM; and so on.
+> Full turn corresponds to 24 hours. 
+Thus, the sun at the west indicates 6AM, not 3AM; east indicates 6PM, not 3PM; south indicates midnight, not 6PM; and so on.
 
 In addition, Daynight Time displays a greeting, using the time of day to choose an appropriate greeting text.
+The greeting corresponds to one of the four times of day: morning, afternoon, evening, and night.
+The cutoff points between those time of day may be defined in a number of ways.
+Daynight Time comes with several ways to define those cutoff points.
+At this time, however, those cutoff points are preselected, and there is no user settings menu to change them.
+Future releases may provide such an appropriate user setting menu.
 
-For the purpose of Daynight Time, the names of time of day re defined a follows:
+| Cutoff mode      | Cutoff points                                                                                                        | Status                   |
+| ---------------- | -------------------------------------------------------------------------------------------------------------------- | ------------------------ |
+| Fixed            | Morning: 6AM-12AM<br/> Afternoon: 12PM-6PM<br/> Evening: 6PM-10PM                                                    | Implemented, not enabled |
+| Daytime adaptive | Morning: sunrise-noon<br/> Afternoon: noon-6PM<br/> Evening: 6PM-10PM                                                | Implemented, not enabled |
+| Schedule-based   | Morning: user-set wake time to noon<br/> Afternoon: noon-sunset<br/> Evening: sunset to user-set sleep time          | Implemented, default     |
+| Activity-based   | Morning: from observed activity to noon <br/> Afternoon: noon-sunset<br/> Evening: sunset to observed wind-down tiem | Not implemented          |
+| User setting     | Explicit user-defined cutoff times                                                                                   | Not implemented          |
 
-| Time of day | From    | To      |
-| :---------- | :-----: | :-----: |
-| Morning     | Sunrise | Noon    |
-| Afternoon   | Noon    | Sunset  |
-| Evening     | Sunset  | 8PM     |
-| Night       | 8PM     | Sunrise |
-
+**Note**  
+The _schedule-based_ mode is based on the wake and sleep times defined by the user in the watch (or app) independently of the Daynight Time watch face.
+Accessing this schedule requires the watch face to have a UserProfile permission.
 
 ## Features
 
