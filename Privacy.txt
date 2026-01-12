@@ -1,0 +1,18 @@
+Privacy Policy: Daynight Time
+
+1. Data Collection  
+This application accesses certain user data to provide a personalized experience:
+
+* User Profile: Accessed to determine scheduled Wake and Sleep times.
+* Location/Weather: Accessed to calculate sunrise and sunset times locally.
+
+2. Data Usage  
+All data accessed is processed locally on the device. 
+This data is used exclusively to determine which greeting (e.g., "Good Morning") and solar information to display on the watch face.
+
+3. Data Storage and Sharing  
+
+* No Data Transmission: This application does not connect to the internet to upload user data. 
+  No data is shared with the developer or any third party.
+
+4. Contact For questions regarding this policy, contact: mailto:waclaw.kusnierczyk@gmail.com

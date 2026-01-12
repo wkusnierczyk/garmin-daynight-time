@@ -13,4 +13,12 @@
         "Daynight greeting"
     ]</jsonData>
 
+    <string id="Greeting">Good</string>
+    <string id="Invocation">Dear</string>
+    <string id="Morning">morning</string>
+    <string id="Day">day</string>
+    <string id="Afternoon">afternoon</string>
+    <string id="Evening">evening</string>
+    <string id="Night">night</string>
+
 </resources>
