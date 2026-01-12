@@ -49,7 +49,9 @@ Future releases may provide such an appropriate user setting menu.
 
 **Note**  
 The _schedule-based_ mode is based on the wake and sleep times defined by the user in the watch (or app) independently of the Daynight Time watch face.
-Accessing this schedule requires the watch face to have a UserProfile permission.
+Accessing this schedule **requires the watch face to have the `UserProfile` permission**.
+See the [Privacy policy file](./Privacy.txt) for more information.
+
 
 ## Features
 
