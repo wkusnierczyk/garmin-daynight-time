@@ -5,6 +5,7 @@ using Toybox.Position;
 using Toybox.System;
 using Toybox.Time;
 using Toybox.Time.Gregorian;
+using Toybox.UserProfile;
 using Toybox.Weather;
 
 import Toybox.Lang;
@@ -14,51 +15,80 @@ using Constants as CS;
 
 class Daynight {
 
-    private static const DEFAULT_TEXT_FONT = Application.loadResource(Rez.Fonts.DefaultFont);
-    private static const DEFAULT_DAYNIGHT_FONT = Application.loadResource(Rez.Fonts.DaynightFont);
+    private enum GreetingTime {
+        MORNING_GREETING_TIME,
+        AFTERNOON_GREETING_TIME,
+        EVENING_GREETING_TIME,
+        NIGHT_GREETING_TIME
+    }
 
-    private static const DEFAULT_LATTITUDE = 47.3299;
-    private static const DEFAULT_LONGITUDE = 8.6240;
+    private static const 
+        DEFAULT_TEXT_FONT = Application.loadResource(Rez.Fonts.DefaultFont),
+        DEFAULT_DAYNIGHT_FONT = Application.loadResource(Rez.Fonts.DaynightFont);
 
-    private static const DEFAULT_SUNRISE_MOMENT = Time.now();
-    private static const DEFAULT_SUNSET_MOMENT = DEFAULT_SUNRISE_MOMENT;
+    private static const 
+        DEFAULT_LATTITUDE = 47.3299,
+        DEFAULT_LONGITUDE = 8.6240;
 
-    private static const DEFAULT_MORNING_COLOR = Graphics.COLOR_ORANGE;
-    private static const DEFAULT_DAY_COLOR = 0xFF9500;
-    private static const DEFAULT_AFTERNOON_COLOR = DEFAULT_DAY_COLOR;
-    private static const DEFAULT_EVENING_COLOR = Graphics.COLOR_RED;
-    private static const DEFAULT_NIGHT_COLOR = 0x007AFF;
-    private static const DEFAULT_TWILIGHT_COLOR = Graphics.COLOR_ORANGE;
-    private static const DEFAULT_TEXT_COLOR = Graphics.COLOR_WHITE;
+    private static const ONE_HOUR_DURATION = new Time.Duration(1 * 3600);
 
-    private static const DEFAULT_RADIUS_FACTOR = 0.9;
-    private static const DEFAULT_THICKNESS_FACTOR = 0.1;
-    private static const DEFAULT_GAP_ANGLE = 1;
-    private static const DEFAULT_TWILIGHT_ANGLE = 8;
+    private static const 
+        DEFAULT_MIDNIGHT_MOMENT = Time.today(),
+        DEFAULT_MORNING_MOMENT = DEFAULT_MIDNIGHT_MOMENT.add(new Time.Duration(6 * 3600)),
+        DEFAULT_NOON_MOMENT = DEFAULT_MIDNIGHT_MOMENT.add(new Time.Duration(12 * 3600)),
+        DEFAULT_EVENING_MOMENT = DEFAULT_MIDNIGHT_MOMENT.add(new Time.Duration(18 * 3600)),
+        DEFAULT_SUNRISE_MOMENT = DEFAULT_MORNING_MOMENT,
+        DEFAULT_SUNSET_MOMENT = DEFAULT_EVENING_MOMENT,
+        DEFAULT_DAWN_MOMENT = DEFAULT_SUNRISE_MOMENT.subtract(ONE_HOUR_DURATION),
+        DEFAULT_DUSK_MOMENT = DEFAULT_SUNSET_MOMENT.add(ONE_HOUR_DURATION);
 
-    private static const DEFAULT_GREETING_TEXT = "Good";
-    private static const DEFAULT_DAY_TEXT = "day";
-    private static const DEFAULT_MORNING_TEXT = "morning";
-    private static const DEFAULT_AFTERNOON_TEXT = "afternoon";
-    private static const DEFAULT_EVENING_TEXT = "evening";
-    private static const DEFAULT_NIGHT_TEXT = "night";
-    private static const DEFAULT_ADDRESS_TEXT = "Dear!";
 
-    private static const DEFAULT_VERTICAL_TEXT_SHIFT_FACTOR = 0.75;
-    
+    private static const 
+        DEFAULT_MORNING_COLOR = Graphics.COLOR_ORANGE,
+        DEFAULT_DAY_COLOR = 0xFF9500,
+        DEFAULT_AFTERNOON_COLOR = DEFAULT_DAY_COLOR,
+        DEFAULT_EVENING_COLOR = Graphics.COLOR_RED,
+        DEFAULT_NIGHT_COLOR = 0x007AFF,
+        DEFAULT_TWILIGHT_COLOR = Graphics.COLOR_ORANGE,
+        DEFAULT_TEXT_COLOR = Graphics.COLOR_WHITE;
+
+    private static const 
+        DEFAULT_RADIUS_FACTOR = 0.9,
+        DEFAULT_THICKNESS_FACTOR = 0.1,
+        DEFAULT_GAP_ANGLE = 1,
+        DEFAULT_TWILIGHT_ANGLE = 8,
+        DEFAULT_VERTICAL_TEXT_SHIFT_FACTOR = 0.75;
+
+    // TODO load from resources
+    private static const 
+        DEFAULT_GREETING_TEXT = Application.loadResource(Rez.Strings.Greeting),
+        DEFAULT_DAY_TEXT = Application.loadResource(Rez.Strings.Day),
+        DEFAULT_MORNING_TEXT = Application.loadResource(Rez.Strings.Morning),
+        DEFAULT_AFTERNOON_TEXT = Application.loadResource(Rez.Strings.Afternoon),
+        DEFAULT_EVENING_TEXT = Application.loadResource(Rez.Strings.Evening),
+        DEFAULT_NIGHT_TEXT = Application.loadResource(Rez.Strings.Night),
+        DEFAULT_ADDRESS_TEXT = Application.loadResource(Rez.Strings.Invocation);
+
 
     private var _location as Position.Location;
 
-    // private var _dawnMoment as Time.Moment;
-    private var _sunriseMoment as Time.Moment = DEFAULT_SUNRISE_MOMENT;
-    private var _sunsetMoment as Time.Moment = DEFAULT_SUNSET_MOMENT;
-    // private var _duskMoment as Time.Moment;
+    private var 
+        _midnight = DEFAULT_MIDNIGHT_MOMENT,
+        _dawn = DEFAULT_DAWN_MOMENT,
+        _sunriseMoment  = DEFAULT_SUNRISE_MOMENT,
+        _morning = DEFAULT_MORNING_MOMENT,
+        _noon = DEFAULT_NOON_MOMENT,
+        _evening = DEFAULT_EVENING_MOMENT,
+        _sunsetMoment = DEFAULT_SUNSET_MOMENT,
+        _dusk = DEFAULT_DUSK_MOMENT;
 
-    private var _dayColor as Graphics.ColorType = DEFAULT_DAY_COLOR;
-    private var _nightColor as Graphics.ColorType = DEFAULT_NIGHT_COLOR;
-    // private var _twilightColor as Graphics.ColorType = DEFAULT_TWILIGHT_COLOR;
+    private var 
+        _dayColor as Graphics.ColorType = DEFAULT_DAY_COLOR,
+        _nightColor as Graphics.ColorType = DEFAULT_NIGHT_COLOR,
+        _twilightColor as Graphics.ColorType = DEFAULT_TWILIGHT_COLOR;
 
-    private var _time as System.ClockTime = System.getClockTime();
+    private var _time as Time.Moment = Time.now();
+
 
     function initialize() {
         _location = new Position.Location({
@@ -70,6 +100,7 @@ class Daynight {
         _refreshSunData();
     }
 
+
     private function _refershLocation() as Daynight {
         if (!CS.IS_SIMULATOR_BUILD) {
             var position_info = Position.getInfo();
@@ -79,6 +110,7 @@ class Daynight {
         }
         return self;
     }
+
 
     private function _refreshSunData() as Daynight {
         var today = Time.today(); // Midnight today
@@ -97,21 +129,24 @@ class Daynight {
         return self;
     }
 
+
     function withNightColor(nightColor as Graphics.ColorType) as Daynight {
         _nightColor = nightColor;
         return self;
     }
 
-    // function withTwilightColor(twilightColor as Graphics.ColorType) as Daynight {
-    //     _twilightColor = twilightColor;
-    //     return self;
-    // }
+
+    function withTwilightColor(twilightColor as Graphics.ColorType) as Daynight {
+        _twilightColor = twilightColor;
+        return self;
+    }
 
 
-    function forTime(time as System.ClockTime) as Daynight {
+    function forTime(time as Time.Moment) as Daynight {
         _time = time;
         return self;
     }
+
 
     function draw(dc as Graphics.Dc) as Daynight {
 
@@ -124,17 +159,9 @@ class Daynight {
         var centerY = height / 2;
         var radius = (DEFAULT_RADIUS_FACTOR * ((width < height) ? width : height) / 2).toNumber();
 
-        var sunriseInfo = Gregorian.info(_sunriseMoment, Time.FORMAT_SHORT);
-        var sunriseHour = sunriseInfo.hour;
-        var sunriseMinute = sunriseInfo.min;
-
-        var sunsetInfo = Gregorian.info(_sunsetMoment, Time.FORMAT_SHORT);
-        var sunsetHour = sunsetInfo.hour;
-        var sunsetMinute = sunsetInfo.min;
-
         var angleCorrection = DEFAULT_GAP_ANGLE + DEFAULT_TWILIGHT_ANGLE / 2;
-        var dayStartAngle = _timeToAngle(sunriseHour, sunriseMinute) - angleCorrection;
-        var dayEndAngle = _timeToAngle(sunsetHour, sunsetMinute) + angleCorrection;
+        var dayStartAngle = _timeToAngle(_sunriseMoment) - angleCorrection;
+        var dayEndAngle = _timeToAngle(_sunsetMoment) + angleCorrection;
         var nightStartAngle = dayEndAngle - angleCorrection;
         var nightEndAngle = dayStartAngle + angleCorrection;
 
@@ -146,48 +173,50 @@ class Daynight {
         dc.setColor(_nightColor, Graphics.COLOR_TRANSPARENT);
         dc.drawArc(centerX, centerY, radius, Graphics.ARC_CLOCKWISE, nightStartAngle, nightEndAngle);
 
-        dc.setColor(DEFAULT_TWILIGHT_COLOR, Graphics.COLOR_TRANSPARENT);
+        dc.setColor(_twilightColor, Graphics.COLOR_TRANSPARENT);
         dc.drawArc(centerX, centerY, radius, Graphics.ARC_CLOCKWISE, dayEndAngle - DEFAULT_GAP_ANGLE, nightStartAngle + DEFAULT_GAP_ANGLE);
         dc.drawArc(centerX, centerY, radius, Graphics.ARC_CLOCKWISE, nightEndAngle - DEFAULT_GAP_ANGLE, dayStartAngle + DEFAULT_GAP_ANGLE);
 
-        var currentHour = _time.hour;
-        var currentMinute = _time.min;
-
-        var currentTimeAngle = _timeToAngle(currentHour, currentMinute);
+        var currentTimeAngle = _timeToAngle(_time);
         var sunCoordinates = _toCartesian((0.8 * radius).toNumber(), currentTimeAngle);
-
-        var sunriseMinutes = sunriseHour * 60 + sunriseMinute;
-        var sunsetMinutes = sunsetHour * 60 + sunsetMinute;
-        var currentMinutes = currentHour * 60 + currentMinute;
-
-        var noonMinutes = 12 * 60;
-        var eveningMinutes = 22 * 60;
-        // var midnightMinutes = 23 * 60 + 59;
 
         var greeting = DEFAULT_DAY_TEXT;
         var greetingColor = DEFAULT_TEXT_COLOR;
-        var sunColor = DEFAULT_TWILIGHT_COLOR;
+        var greetingType = _activityBasedGreeting();
+        switch (greetingType) {
+            case MORNING_GREETING_TIME:
+                greeting = DEFAULT_MORNING_TEXT;
+                greetingColor = DEFAULT_MORNING_COLOR;
+                break;
+            case AFTERNOON_GREETING_TIME:
+                greeting = DEFAULT_AFTERNOON_TEXT;
+                greetingColor = DEFAULT_AFTERNOON_COLOR;
+                break;
+            case EVENING_GREETING_TIME:
+                greeting = DEFAULT_EVENING_TEXT;
+                greetingColor = DEFAULT_EVENING_COLOR;
+                break;
+            case NIGHT_GREETING_TIME:
+                greeting = DEFAULT_NIGHT_TEXT;
+                greetingColor = DEFAULT_NIGHT_COLOR;
+                break;
+        }
 
-        if (currentMinutes < sunriseMinutes or currentMinutes >= eveningMinutes) {
-            greeting = DEFAULT_NIGHT_TEXT;
-            greetingColor = DEFAULT_NIGHT_COLOR;
-            sunColor = DEFAULT_NIGHT_COLOR;
-        } else if (currentMinutes >= sunriseMinutes and currentMinutes <= noonMinutes) {
-            greeting = DEFAULT_MORNING_TEXT;
-            greetingColor = DEFAULT_MORNING_COLOR;
-            sunColor = DEFAULT_DAY_COLOR;
-        } else if (currentMinutes > noonMinutes and currentMinutes <= sunsetMinutes) {
-            greeting = DEFAULT_AFTERNOON_TEXT;
-            greetingColor = DEFAULT_AFTERNOON_COLOR;
-            sunColor = DEFAULT_DAY_COLOR;
-        } else if (currentMinutes > sunsetMinutes and currentMinutes < eveningMinutes) {
-            greeting = DEFAULT_EVENING_TEXT;
-            greetingColor = DEFAULT_EVENING_COLOR;
+        var sunColor = _twilightColor;
+        if (_time.lessThan(_dawn)) {
+            sunColor = _nightColor;
+        } else if (_time.lessThan(_sunriseMoment)) {
+            sunColor = _twilightColor;
+        } else if (_time.lessThan(_sunsetMoment)) {
+            sunColor = _dayColor;
+        } else if (_time.lessThan(_dusk)) {
+            sunColor = _twilightColor;
+        } else {
             sunColor = DEFAULT_NIGHT_COLOR;
         }
 
-        var sunColorIndex = PropertyUtils.getPropertyElseDefault(CS.SUN_COLOR_PROPERTY_ID, CS.SUN_COLOR_PROPERTY_DEFAULT);
-        if (sunColorIndex == 1) { // sun color = greeting color
+        var sunColorOption = PropertyUtils.getPropertyElseDefault(CS.SUN_COLOR_PROPERTY_ID, CS.SUN_COLOR_PROPERTY_DEFAULT);
+        if (sunColorOption == 1) { // sun color = greeting color
             sunColor = greetingColor;
         }
         
@@ -211,24 +240,106 @@ class Daynight {
         return self;
     }
 
-    private function _timeToAngle(hour as Number, minutes as Number) as Number {
-        return 270 - ((1.0 * hour * 60 + minutes) / (24 * 60) * 360).toNumber();
+
+    // private function _timeToAngle(hour as Number, minutes as Number) as Number {
+    //     return 270 - ((1.0 * hour * 60 + minutes) / (24 * 60) * 360).toNumber();
+    // }
+
+    private function _timeToAngle(time as Time.Moment) as Number {
+        var info = Gregorian.info(time, Time.FORMAT_SHORT);
+        return 270 - ((info.hour * 60.0 + info.min) / (24 * 60) * 360).toNumber();
     }
+
+
+    private function _toAngle(time as Time.Moment) as Number {
+        var info = Gregorian.info(time, Time.FORMAT_SHORT);
+        return 270 - ((1.0 * info.hour * 60 + info.min) / (24 * 60) * 360).toNumber();
+    }
+
 
     private function _toCartesian(radius as Number, angle as Number) as [Number, Number] {
         var angleRadians = Math.toRadians(angle);
         return [
             (radius * Math.cos(angleRadians)).toNumber(),
-            (-1.0 * radius * Math.sin(angleRadians)).toNumber()
+            - (radius * Math.sin(angleRadians)).toNumber()
         ];
     }
 
-    private function _isBefore(this as Dictionary, that as Dictionary) as Boolean {
-        return (this[:hour] * 60 + this[:min]) < (that[:hour] * 60 + that[:min]);
+
+    // Hardcoded greeting times
+    private function _fixedTimeGreeting() as GreetingTime {        
+        return _timeBasedGreeting(_morning, _noon, _evening, _midnight);
     }
 
-    private function _isAfter(this as Dictionary, that as Dictionary) as Boolean {
-        return (this[:hour] * 60 + this[:min]) > (that[:hour] * 60 + that[:min]);
+
+    // In-app customisation user defined greeting times
+    private function _userDefinedGreeting() as GreetingTime {
+        // TODO
+        return MORNING_GREETING_TIME;
     }
+
+
+    // Daynight adaptive greeting times
+    private function _daynightGreeting() as GreetingTime {
+        var morning = _sunriseMoment;
+        var day = _noon;
+        var evening = _sunsetMoment;
+        var night = _midnight;
+        return _timeBasedGreeting(morning, day, evening, night);
+    }
+
+
+    // Recorded activity-dependent greeting times
+    private function _activityBasedGreeting() as GreetingTime {
+        // TODO
+        var morning = _getWakeTime();
+        var day = Time.today().add(new Time.Duration(12 * 3600));
+        var evening = _sunsetMoment;
+        var night = _getSleepTime();
+        return _timeBasedGreeting(morning, day, evening, night);
+    }
+
+
+    private function _timeBasedGreeting(morning as Time.Moment, day as Time.Moment, evening as Time.Moment, night as Time.Moment) as GreetingTime {
+        if (day.lessThan(morning)) {
+            day = morning.add(ONE_HOUR_DURATION);
+        }
+        if (evening.lessThan(day)) {
+            evening = day.add(ONE_HOUR_DURATION);
+        }
+        if (night.lessThan(evening)) {
+            night = evening.add(ONE_HOUR_DURATION);
+        }
+        if (_time.lessThan(morning)) {
+\            return NIGHT_GREETING_TIME;
+        } else if (_time.lessThan(day)) {
+            return MORNING_GREETING_TIME;
+        } else if (_time.lessThan(evening)) {
+            return AFTERNOON_GREETING_TIME;
+        } else if (_time.lessThan(night)) {
+            return EVENING_GREETING_TIME;
+        } else {
+            return NIGHT_GREETING_TIME;
+        }
+    }
+
+
+    private function _getWakeTime() as Time.Moment {
+        var profile = UserProfile.getProfile();
+        if (profile has :wakeTime && profile.wakeTime != null) {
+            return Time.today().add(profile.wakeTime);
+        }
+        return _morning;
+    }
+
+
+    private function _getSleepTime() as Time.Moment {
+        var profile = UserProfile.getProfile();
+        if (profile has :sleepTime && profile.sleepTime != null) {
+            return Time.today().add(profile.sleepTime);
+        }
+        return _midnight;
+    }
+
 
 }

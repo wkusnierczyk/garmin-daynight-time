@@ -24,16 +24,16 @@ class DaynightView extends WatchUi.WatchFace {
         dc.setColor(Graphics.COLOR_BLACK, Graphics.COLOR_WHITE);
         dc.fillRectangle(0, 0, dc.getWidth(), dc.getHeight());
 
-        var time = System.getClockTime();
+        var time = Time.now();
 
         if (CS.IS_SIMULATOR_BUILD) {
-            time.hour = 9;
-            time.min = 0;
+            var hour = 7;
+            time = Time.today().add(new Time.Duration(hour * 3600));
         }        
 
        _daynight
             .forTime(time)
-            .draw(dc);\
+            .draw(dc);
 
     }
 
