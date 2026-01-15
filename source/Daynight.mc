@@ -31,13 +31,16 @@ class Daynight {
         DEFAULT_LATTITUDE = 47.3299,
         DEFAULT_LONGITUDE = 8.6240;
 
-    private static const ONE_HOUR_DURATION = new Time.Duration(1 * 3600);
+    private static const 
+        ONE_HOUR_DURATION = new Time.Duration(1 * 3600),
+        SIX_HOURS_DURATION = new Time.Duration(6 * 3600),
+        TWELVE_HOURS_DURATION = new Time.Duration(12 * 3600);
 
     private static const 
         DEFAULT_MIDNIGHT_MOMENT = Time.today(),
-        DEFAULT_MORNING_MOMENT = DEFAULT_MIDNIGHT_MOMENT.add(new Time.Duration(6 * 3600)),
-        DEFAULT_NOON_MOMENT = DEFAULT_MIDNIGHT_MOMENT.add(new Time.Duration(12 * 3600)),
-        DEFAULT_EVENING_MOMENT = DEFAULT_MIDNIGHT_MOMENT.add(new Time.Duration(18 * 3600)),
+        DEFAULT_MORNING_MOMENT = DEFAULT_MIDNIGHT_MOMENT.add(SIX_HOURS_DURATION),
+        DEFAULT_NOON_MOMENT = DEFAULT_MORNING_MOMENT.add(SIX_HOURS_DURATION),
+        DEFAULT_EVENING_MOMENT = DEFAULT_NOON_MOMENT.add(SIX_HOURS_DURATION),
         DEFAULT_SUNRISE_MOMENT = DEFAULT_MORNING_MOMENT,
         DEFAULT_SUNSET_MOMENT = DEFAULT_EVENING_MOMENT,
         DEFAULT_DAWN_MOMENT = DEFAULT_SUNRISE_MOMENT.subtract(ONE_HOUR_DURATION),
@@ -76,11 +79,11 @@ class Daynight {
     private var 
         _midnight = DEFAULT_MIDNIGHT_MOMENT,
         _dawn = DEFAULT_DAWN_MOMENT,
-        _sunriseMoment  = DEFAULT_SUNRISE_MOMENT,
+        _sunrise  = DEFAULT_SUNRISE_MOMENT,
         _morning = DEFAULT_MORNING_MOMENT,
         _noon = DEFAULT_NOON_MOMENT,
         _evening = DEFAULT_EVENING_MOMENT,
-        _sunsetMoment = DEFAULT_SUNSET_MOMENT,
+        _sunset = DEFAULT_SUNSET_MOMENT,
         _dusk = DEFAULT_DUSK_MOMENT;
 
     private var 
@@ -114,12 +117,13 @@ class Daynight {
 
 
     private function _refreshSunData() as Daynight {
-        var today = Time.today(); // Midnight today
+        _midnight = Time.today();
         if (Weather has :getSunrise) {
-            _sunriseMoment = Weather.getSunrise(_location, today);
-            _sunsetMoment = Weather.getSunset(_location, today);
-            // _dawnMoment = Weather.getDawn(_location, today);
-            // _duskMoment = Weather.getDusk(_location, today);
+            _noon = _midnight.add(TWELVE_HOURS_DURATION);
+            _sunrise = Weather.getSunrise(_location, _midnight);
+            _sunset = Weather.getSunset(_location, _midnight);
+            _dawn = _sunrise.subtract(ONE_HOUR_DURATION);
+            _dusk = _sunset.add(ONE_HOUR_DURATION);
         }
         return self;
     }
@@ -161,8 +165,8 @@ class Daynight {
         var radius = (DEFAULT_RADIUS_FACTOR * ((width < height) ? width : height) / 2).toNumber();
 
         var angleCorrection = DEFAULT_GAP_ANGLE + DEFAULT_TWILIGHT_ANGLE / 2;
-        var dayStartAngle = _timeToAngle(_sunriseMoment) - angleCorrection;
-        var dayEndAngle = _timeToAngle(_sunsetMoment) + angleCorrection;
+        var dayStartAngle = _timeToAngle(_sunrise) - angleCorrection;
+        var dayEndAngle = _timeToAngle(_sunset) + angleCorrection;
         var nightStartAngle = dayEndAngle - angleCorrection;
         var nightEndAngle = dayStartAngle + angleCorrection;
 
@@ -206,9 +210,9 @@ class Daynight {
         var sunColor = _twilightColor;
         if (_time.lessThan(_dawn)) {
             sunColor = _nightColor;
-        } else if (_time.lessThan(_sunriseMoment)) {
+        } else if (_time.lessThan(_sunrise)) {
             sunColor = _twilightColor;
-        } else if (_time.lessThan(_sunsetMoment)) {
+        } else if (_time.lessThan(_sunset)) {
             sunColor = _dayColor;
         } else if (_time.lessThan(_dusk)) {
             sunColor = _twilightColor;
@@ -270,34 +274,34 @@ class Daynight {
     }
 
 
-    // Daynight adaptive greeting times base on sunrise and sunset times
+    // Daynight-adaptive greeting times based on sunrise and sunset times
     private function _daynightGreeting() as GreetingTime {
-        var morning = _sunriseMoment;
+        var morning = _sunrise;
         var day = _noon;
-        var evening = _sunsetMoment;
+        var evening = _sunset;
         var night = _midnight;
         return _timeBasedGreeting(morning, day, evening, night);
     }
 
 
-    // Schedule-dependent greeting times
+    // Schedule-dependent greeting times based on user profile settings
     private function _scheduleBasedGreeting() as GreetingTime {
-        // TODO
         var morning = _getWakeTime();
-        var day = Time.today().add(new Time.Duration(12 * 3600));
-        var evening = _sunsetMoment;
+        var day = Time.today().add(TWELVE_HOURS_DURATION);
+        var evening = _sunset;
         var night = _getSleepTime();
         return _timeBasedGreeting(morning, day, evening, night);
     }
 
 
     // Activity-dependent greeting times
-    private function _activityBasedGreeting() as GreetingTime {
-        // TODO
-        return DAY_GREETING_TIME;
-    }
+    // private function _activityBasedGreeting() as GreetingTime {
+    //     // TODO
+    //     return DAY_GREETING_TIME;
+    // }
 
     private function _timeBasedGreeting(morning as Time.Moment, day as Time.Moment, evening as Time.Moment, night as Time.Moment) as GreetingTime {
+
         if (day.lessThan(morning)) {
             day = morning.add(ONE_HOUR_DURATION);
         }
@@ -307,8 +311,9 @@ class Daynight {
         if (night.lessThan(evening)) {
             night = evening.add(ONE_HOUR_DURATION);
         }
+
         if (_time.lessThan(morning)) {
-\            return NIGHT_GREETING_TIME;
+            return NIGHT_GREETING_TIME;
         } else if (_time.lessThan(day)) {
             return MORNING_GREETING_TIME;
         } else if (_time.lessThan(evening)) {
@@ -318,6 +323,7 @@ class Daynight {
         } else {
             return NIGHT_GREETING_TIME;
         }
+        
     }
 
 
