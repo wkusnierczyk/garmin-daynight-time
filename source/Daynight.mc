@@ -75,6 +75,7 @@ class Daynight {
 
 
     private var _location as Position.Location;
+    private var _lastSunDataDayKey = null;
 
     private var 
         _midnight = DEFAULT_MIDNIGHT_MOMENT,
@@ -123,18 +124,22 @@ class Daynight {
     private function _refreshSunData() as Daynight {
         _midnight = Time.today();
         _noon = _midnight.add(TWELVE_HOURS_DURATION);
-        if (Weather has :getSunrise) {
-            try {
-                var sunrise = Weather.getSunrise(_location, _midnight);
-                var sunset = Weather.getSunset(_location, _midnight);
-                if (sunrise != null && sunset != null) {
-                    _sunrise = sunrise;
-                    _sunset = sunset;
-                    _dawn = _sunrise.subtract(ONE_HOUR_DURATION);
-                    _dusk = _sunset.add(ONE_HOUR_DURATION);
+        var todayKey = _dayKey(_midnight);
+        if (_lastSunDataDayKey == null || _lastSunDataDayKey != todayKey) {
+            if (Weather has :getSunrise) {
+                try {
+                    var sunrise = Weather.getSunrise(_location, _midnight);
+                    var sunset = Weather.getSunset(_location, _midnight);
+                    if (sunrise != null && sunset != null) {
+                        _sunrise = sunrise;
+                        _sunset = sunset;
+                        _dawn = _sunrise.subtract(ONE_HOUR_DURATION);
+                        _dusk = _sunset.add(ONE_HOUR_DURATION);
+                        _lastSunDataDayKey = todayKey;
+                    }
+                } catch (_) {
+                    // Keep last known sun data.
                 }
-            } catch (_) {
-                // Keep last known sun data.
             }
         }
         return self;
@@ -261,6 +266,12 @@ class Daynight {
     private function _timeToAngle(time as Time.Moment) as Number {
         var info = Gregorian.info(time, Time.FORMAT_SHORT);
         return 270 - ((info.hour * 60.0 + info.min) / (24 * 60) * 360).toNumber();
+    }
+
+
+    private function _dayKey(time as Time.Moment) as Number {
+        var info = Gregorian.info(time, Time.FORMAT_SHORT);
+        return (info.year * 10000 + info.month * 100 + info.day).toNumber();
     }
 
 
