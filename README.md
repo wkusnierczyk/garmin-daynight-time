@@ -52,6 +52,12 @@ The _schedule-based_ mode is based on the wake and sleep times defined by the us
 Accessing this schedule **requires the watch face to have the `UserProfile` permission**.
 See the [Privacy policy file](./Privacy.txt) for more information.
 
+**Permissions**  
+Daynight Time uses current location to compute sunrise and sunset. This requires the `Positioning` permission in the manifest (via `Toybox.Position`).  
+Sunrise/sunset values are fetched via `Toybox.Weather.getSunrise/getSunset`, which can return `null` when data is unavailable (e.g., no weather data or polar day/night).  
+Garmin API docs do not list an additional Weather-specific permission beyond `Positioning`.  
+See the official API references for [`Toybox.Position`](https://developer.garmin.com/connect-iq/api-docs/Toybox/Position.html) and [`Toybox.Weather`](https://developer.garmin.com/connect-iq/api-docs/Toybox/Weather.html).
+
 
 ## Features
 
