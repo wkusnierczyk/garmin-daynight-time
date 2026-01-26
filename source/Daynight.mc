@@ -107,9 +107,13 @@ class Daynight {
 
     private function _refershLocation() as Daynight {
         if (!CS.IS_SIMULATOR_BUILD) {
-            var position_info = Position.getInfo();
-            if (position_info has :position && position_info.position != null) {
-                _location = position_info.position;
+            try {
+                var position_info = Position.getInfo();
+                if (position_info has :position && position_info.position != null) {
+                    _location = position_info.position;
+                }
+            } catch (_) {
+                // Keep last known location.
             }
         }
         return self;
@@ -118,12 +122,20 @@ class Daynight {
 
     private function _refreshSunData() as Daynight {
         _midnight = Time.today();
+        _noon = _midnight.add(TWELVE_HOURS_DURATION);
         if (Weather has :getSunrise) {
-            _noon = _midnight.add(TWELVE_HOURS_DURATION);
-            _sunrise = Weather.getSunrise(_location, _midnight);
-            _sunset = Weather.getSunset(_location, _midnight);
-            _dawn = _sunrise.subtract(ONE_HOUR_DURATION);
-            _dusk = _sunset.add(ONE_HOUR_DURATION);
+            try {
+                var sunrise = Weather.getSunrise(_location, _midnight);
+                var sunset = Weather.getSunset(_location, _midnight);
+                if (sunrise != null && sunset != null) {
+                    _sunrise = sunrise;
+                    _sunset = sunset;
+                    _dawn = _sunrise.subtract(ONE_HOUR_DURATION);
+                    _dusk = _sunset.add(ONE_HOUR_DURATION);
+                }
+            } catch (_) {
+                // Keep last known sun data.
+            }
         }
         return self;
     }
