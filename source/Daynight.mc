@@ -341,7 +341,7 @@ class Daynight {
 
     private function _getWakeTime() as Time.Moment {
         var profile = UserProfile.getProfile();
-        if (profile has :wakeTime && profile.wakeTime != null) {
+        if (profile != null && profile has :wakeTime && profile.wakeTime != null) {
             return Time.today().add(profile.wakeTime);
         }
         return _morning;
@@ -350,7 +350,7 @@ class Daynight {
 
     private function _getSleepTime() as Time.Moment {
         var profile = UserProfile.getProfile();
-        if (profile has :sleepTime && profile.sleepTime != null) {
+        if (profile != null && profile has :sleepTime && profile.sleepTime != null) {
             return Time.today().add(profile.sleepTime);
         }
         return _midnight;
